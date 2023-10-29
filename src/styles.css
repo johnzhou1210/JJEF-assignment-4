@@ -50,17 +50,17 @@ ul {
   box-sizing: border-box;
 }
 
-body {
+.canvas {
   font-family: sans-serif;
   margin: 20px;
   padding: 0;
 }
 
-.square {
+.cell {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
   line-height: 34px;
   height: 34px;
@@ -71,7 +71,7 @@ body {
   width: 34px;
 }
 
-.board-row:after {
+.grid-row:after {
   clear: both;
   content: '';
   display: table;
@@ -85,6 +85,6 @@ body {
   flex-direction: row;
 }
 
-.game-info {
+.grid-tools {
   margin-left: 20px;
 }
