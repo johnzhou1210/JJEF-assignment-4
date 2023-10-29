@@ -1,18 +1,67 @@
 import { useState } from "react";
 
+function Cell({ colorValue, onCellClick }) {
+  return (
+    <button className="cell" onClick={onCellClick}>
+      {colorValue}
+    </button>
+  );
+}
+
 export default function Gridmaker() {
   const [numRows, setNumRows] = useState(0);
   const [numColumns, setNumColumns] = useState(0);
+  const [grid, setGrid] = useState([]);
 
   function addRow() {
-    setNumRows(numRows + 1);
-    console.log(`numRows incremented to ${numRows}`);
+    if (numColumns == 0 && numRows == 0) {
+      setNumColumns(1);
+      setNumRows(1);
+      console.log(`numRows and numCols set to 1`);
+      setGrid([["cell"]]);
+      return;
+    }
+
+    let updatedNumRows = numRows + 1;
+    setNumRows(updatedNumRows); // increment number of rows
+    console.log(`numRows incremented to ${updatedNumRows}`);
+
+    // add a "default" row to the grid
+    let rowSquares = Array(numColumns == 0 ? 1 : numColumns).fill("cell");
+    let newGrid = grid.slice();
+    newGrid.push(rowSquares);
+    setGrid(newGrid);
   }
 
   function addColumn() {
-    setNumColumns(numColumns + 1);
-    console.log(`numColumns incremented to ${numColumns}`);
+    if (numColumns == 0 && numRows == 0) {
+      setNumRows(1);
+      setNumColumns(1);
+      console.log(`numRows and numCols set to 1`);
+      setGrid([["cell"]]);
+      return;
+    }
+    let updatedNumColumns = numColumns + 1;
+    setNumColumns(updatedNumColumns);
+    console.log(`numColumns incremented to ${updatedNumColumns}`);
+
+    // push an element to each row
+    let newGrid = grid.slice();
+    newGrid.forEach((element) => {
+      element.push("cell");
+    });
   }
+
+  const canvas = grid.map((currRow, rowKey) => {
+    console.log(currRow);
+    return (
+      <div key={rowKey} className="grid-row">
+        {currRow.map((cell, cellKey) => {
+          return <Cell key={cellKey} colorValue={cell} />;
+        })}
+      </div>
+    );
+  });
 
   return (
     <>
@@ -21,7 +70,7 @@ export default function Gridmaker() {
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
       </div>
 
-      <div className="grid-row"></div>
+      <div className="canvas">{canvas}</div>
     </>
   );
 }
