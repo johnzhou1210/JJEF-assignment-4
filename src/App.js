@@ -12,6 +12,7 @@ export default function Gridmaker() {
   const [numRows, setNumRows] = useState(0);
   const [numColumns, setNumColumns] = useState(0);
   const [grid, setGrid] = useState([]);
+  const [currentColor, setCurrentColor] = useState("white");
 
   function addRow() {
     if (numColumns == 0 && numRows == 0) {
@@ -52,6 +53,10 @@ export default function Gridmaker() {
     });
   }
 
+  function collectColor(collectedColor) {
+    console.log(collectedColor);
+  }
+
   const canvas = grid.map((currRow, rowKey) => {
     console.log(currRow);
     return (
@@ -68,6 +73,7 @@ export default function Gridmaker() {
       <div className="grid-tools">
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
+        <ColorDropdownMenu collectColor={collectColor} />
       </div>
 
       <div className="canvas">{canvas}</div>
@@ -88,5 +94,27 @@ function AddColumnButton({ onAddColumnButtonClick }) {
     <button className="add-column-button" onClick={onAddColumnButtonClick}>
       Add Column
     </button>
+  );
+}
+
+function ColorDropdownMenu({ collectColor }) {
+  const [selectedColor, setSelectedColor] = useState("white");
+
+  function changeColor(color) {
+    setSelectedColor(color);
+    collectColor(color);
+  }
+
+  return (
+    <select className="color-dropdown-menu" value={selectedColor} onChange={e => changeColor(e.target.value)}>
+      <option value="white">select a color</option>
+      <option value="blue">blue</option>
+      <option value="red">red</option>
+      <option value="yellow">yellow</option>
+      <option value="green">green</option>
+      <option value="pink">pink</option>
+      <option value="purple">purple</option>
+      <option value="black">black</option>
+    </select>
   );
 }
