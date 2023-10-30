@@ -108,6 +108,7 @@ function ColorDropdownMenu({ collectColor }) {
   return (
     <select className="color-dropdown-menu" value={selectedColor} onChange={e => changeColor(e.target.value)}>
       <option value="white">select a color</option>
+      <option value="white">white</option>
       <option value="blue">blue</option>
       <option value="red">red</option>
       <option value="yellow">yellow</option>
