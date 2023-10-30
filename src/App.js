@@ -1,14 +1,26 @@
 import { useState } from "react";
 
-function Cell({ colorValue, onCellClick }) {
+//Note to remove the color text outside of testing
+//Can set font size to 0px for not as practical but quick fix
+function Cell({ colorValue, onCellClick}) {
+  //cellStyle added
+  //minor change to cellStyle to have the background properly filled with color
+  const cellStyle = {
+    backgroundColor: colorValue === "cell" ? "transparent" : colorValue,
+  };
+  
   return (
-    <button className="cell" onClick={onCellClick}>
+    <button className="cell" style={cellStyle} onClick={onCellClick}>
       {colorValue}
     </button>
   );
 }
 
 export default function Gridmaker() {
+  //selectedColor and isColored variable added
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [isColored, setIsColored] = useState(false);
+  
   const [numRows, setNumRows] = useState(0);
   const [numColumns, setNumColumns] = useState(0);
   const [grid, setGrid] = useState([]);
@@ -63,11 +75,50 @@ export default function Gridmaker() {
     );
   });
 
+  //handleColorSelect added
+  function handleColorSelect(color) {
+    setSelectedColor(color);
+  }
+  //Works with handleColorSelect
+  function ColorSelect() {
+    return (
+      <select onChange={(e) => handleColorSelect(e.target.value)}>
+        <option value="">Select Color</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="yellow">Yellow</option>
+      </select>
+    );
+  }
+  //fillUncoloredCells added
+  //the cell === "cell" will need to be changed to cell === ""
+  //temporary for current cells
+  function fillUncoloredCells() {
+    if (selectedColor) {
+      const updatedGrid = grid.map((row) =>
+        row.map((cell) => (cell === "cell" ? selectedColor : cell))
+      );
+      setGrid(updatedGrid);
+    }
+  }
+  //removeColorFromCells added
+  //same thing applies here
+  //currently "cell" will be changed to ""
+  function removeColorFromCells() {
+    const updatedGrid = grid.map((row) => row.map(() => "cell"));
+    setGrid(updatedGrid);
+  }
+
+
   return (
     <>
       <div className="grid-tools">
+        <ColorSelect />
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
+        <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
+        <button onClick={removeColorFromCells}>Remove Color</button>
       </div>
 
       <div className="canvas">{canvas}</div>
@@ -90,3 +141,5 @@ function AddColumnButton({ onAddColumnButtonClick }) {
     </button>
   );
 }
+
+
