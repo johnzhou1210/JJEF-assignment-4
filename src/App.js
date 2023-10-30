@@ -54,7 +54,7 @@ export default function Gridmaker() {
   }
 
   function collectColor(collectedColor) {
-    console.log(collectedColor);
+    setCurrentColor(collectedColor);
   }
 
   const canvas = grid.map((currRow, rowKey) => {
