@@ -57,6 +57,10 @@ export default function Gridmaker() {
     setCurrentColor(collectedColor);
   }
 
+  function fillGrid() {
+    setGrid(grid.map((row) => row.map((cell) => currentColor)));
+  }
+
   const canvas = grid.map((currRow, rowKey) => {
     console.log(currRow);
     return (
@@ -74,6 +78,7 @@ export default function Gridmaker() {
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
         <ColorDropdownMenu collectColor={collectColor} />
+        <FillGridButton onFillGridButtonClick={() => fillGrid()}/>
       </div>
 
       <div className="canvas">{canvas}</div>
@@ -118,4 +123,12 @@ function ColorDropdownMenu({ collectColor }) {
       <option value="black">black</option>
     </select>
   );
+}
+
+function FillGridButton({ onFillGridButtonClick }) {
+  return (
+    <button className="fill-grid-button" onClick={onFillGridButtonClick}>
+      Fill Grid
+    </button>
+  )
 }
