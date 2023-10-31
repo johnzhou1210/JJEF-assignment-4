@@ -24,7 +24,6 @@ export default function Gridmaker() {
   const [numRows, setNumRows] = useState(0);
   const [numColumns, setNumColumns] = useState(0);
   const [grid, setGrid] = useState([]);
-  const [currentColor, setCurrentColor] = useState("white");
 
   function addRow() {
     if (numColumns == 0 && numRows == 0) {
@@ -65,11 +64,6 @@ export default function Gridmaker() {
     });
   }
 
-  function collectColor(collectedColor) {
-    setCurrentColor(collectedColor);
-  }
-  
-
   const canvas = grid.map((currRow, rowKey) => {
     console.log(currRow);
     return (
@@ -107,22 +101,12 @@ function removeRow() {
 
     }
   }
+
   //handleColorSelect added
   function handleColorSelect(color) {
     setSelectedColor(color);
   }
-  //Works with handleColorSelect
-  function ColorSelect() {
-    return (
-      <select onChange={(e) => handleColorSelect(e.target.value)}>
-        <option value="">Select Color</option>
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
-        <option value="green">Green</option>
-        <option value="yellow">Yellow</option>
-      </select>
-    );
-  }
+
   //fillUncoloredCells added
   //the cell === "cell" will need to be changed to cell === ""
   //temporary for current cells
@@ -134,6 +118,7 @@ function removeRow() {
       setGrid(updatedGrid);
     }
   }
+
   //removeColorFromCells added
   //same thing applies here
   //currently "cell" will be changed to ""
@@ -142,14 +127,12 @@ function removeRow() {
     setGrid(updatedGrid);
   }
 
-
   return (
     <>
       <div className="grid-tools">
-        <ColorSelect />
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
-        <ColorDropdownMenu collectColor={collectColor} />
+        <ColorSelect handleColorSelect={handleColorSelect} />
         <button onClick={removeRow}>Remove Row </button>
         <button onClick={removeColumn}>Remove Column </button>
         <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
@@ -177,29 +160,26 @@ function AddColumnButton({ onAddColumnButtonClick }) {
   );
 }
 
-
-
-
-
-function ColorDropdownMenu({ collectColor }) {
-  const [selectedColor, setSelectedColor] = useState("white");
+//Works with handleColorSelect
+function ColorSelect({ handleColorSelect }) {
+  const [displayColor, setDisplayColor] = useState("");
 
   function changeColor(color) {
-    setSelectedColor(color);
-    collectColor(color);
+    setDisplayColor(color);
+    handleColorSelect(color);
   }
 
   return (
-    <select className="color-dropdown-menu" value={selectedColor} onChange={e => changeColor(e.target.value)}>
-      <option value="white">Select a Color</option>
-      <option value="white">white</option>
-      <option value="blue">blue</option>
-      <option value="red">red</option>
-      <option value="yellow">yellow</option>
-      <option value="green">green</option>
-      <option value="pink">pink</option>
-      <option value="purple">purple</option>
-      <option value="black">black</option>
+    <select className="color-dropdown-menu" value={displayColor} onChange={e => changeColor(e.target.value)}>
+      <option value="">Select a Color</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="yellow">Yellow</option>
+      <option value="white">White</option>
+      <option value="pink">Pink</option>
+      <option value="purple">Purple</option>
+      <option value="black">Black</option>
     </select>
   );
 }
