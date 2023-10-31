@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/JJEF-assignment-4/static/css/main.ed0d705c.css",
+    "main.js": "/JJEF-assignment-4/static/js/main.10118189.js",
+    "index.html": "/JJEF-assignment-4/index.html",
+    "main.ed0d705c.css.map": "/JJEF-assignment-4/static/css/main.ed0d705c.css.map",
+    "main.10118189.js.map": "/JJEF-assignment-4/static/js/main.10118189.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ed0d705c.css",
+    "static/js/main.10118189.js"
+  ]
+}
