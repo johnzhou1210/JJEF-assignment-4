@@ -115,6 +115,10 @@ function removeRow() {
     setSelectedColor(color);
   }
 
+  function cellClick(key, currRow, colorValue) {
+    console.log(key, currRow, colorValue);
+  }
+
   //fillUncoloredCells added
   //the cell === "cell" will need to be changed to cell === ""
   //temporary for current cells
