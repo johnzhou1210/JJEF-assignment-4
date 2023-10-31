@@ -1,18 +1,29 @@
 import { useState } from "react";
 
-function Cell({ colorValue, onCellClick }) {
+//Note to remove the color text outside of testing
+//Can set font size to 0px for not as practical but quick fix
+function Cell({ colorValue, onCellClick}) {
+  //cellStyle added
+  //minor change to cellStyle to have the background properly filled with color
+  const cellStyle = {
+    backgroundColor: colorValue === "cell" ? "transparent" : colorValue,
+  };
+  
   return (
-    <button className="cell" onClick={onCellClick}>
+    <button className="cell" style={cellStyle} onClick={onCellClick}>
       {colorValue}
     </button>
   );
 }
 
 export default function Gridmaker() {
+  //selectedColor and isColored variable added
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [isColored, setIsColored] = useState(false);
+  
   const [numRows, setNumRows] = useState(0);
   const [numColumns, setNumColumns] = useState(0);
   const [grid, setGrid] = useState([]);
-  const [currentColor, setCurrentColor] = useState("white");
 
   function addRow() {
     if (numColumns == 0 && numRows == 0) {
@@ -53,14 +64,6 @@ export default function Gridmaker() {
     });
   }
 
-  function collectColor(collectedColor) {
-    setCurrentColor(collectedColor);
-  }
-
-  function fillGrid() {
-    setGrid(grid.map((row) => row.map((cell) => currentColor)));
-  }
-
   const canvas = grid.map((currRow, rowKey) => {
     console.log(currRow);
     return (
@@ -72,13 +75,68 @@ export default function Gridmaker() {
     );
   });
 
+function removeColumn() {
+    if (numColumns > 0) {
+      const updatedGrid = grid.map((row) => {
+        const newRow = [...row];
+        newRow.pop(); // Remove the last column in this row
+        return newRow;
+      });
+      setGrid(updatedGrid);
+      setNumColumns(numColumns - 1);
+    }
+    if (numColumns === 0) {
+      setNumRows(0);
+    }
+}
+function removeRow() {
+    if (numRows > 0) {
+      const updatedGrid = [...grid];
+      updatedGrid.pop(); // Remove the last row
+      setGrid(updatedGrid);
+      setNumRows(numRows - 1);
+    }
+    if (numRows === 0) {
+      setNumColumns(0);
+
+    }
+  }
+
+  //handleColorSelect added
+  function handleColorSelect(color) {
+    setSelectedColor(color);
+  }
+
+  //fillUncoloredCells added
+  //the cell === "cell" will need to be changed to cell === ""
+  //temporary for current cells
+  function fillUncoloredCells() {
+    if (selectedColor) {
+      const updatedGrid = grid.map((row) =>
+        row.map((cell) => (cell === "cell" ? selectedColor : cell))
+      );
+      setGrid(updatedGrid);
+    }
+  }
+
+  //removeColorFromCells added
+  //same thing applies here
+  //currently "cell" will be changed to ""
+  function removeColorFromCells() {
+    const updatedGrid = grid.map((row) => row.map(() => "cell"));
+    setGrid(updatedGrid);
+  }
+
   return (
     <>
       <div className="grid-tools">
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
-        <ColorDropdownMenu collectColor={collectColor} />
-        <FillGridButton onFillGridButtonClick={() => fillGrid()}/>
+        <ColorSelect handleColorSelect={handleColorSelect} />
+        <button onClick={removeRow}>Remove Row </button>
+        <button onClick={removeColumn}>Remove Column </button>
+        <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
+        <button onClick={removeColorFromCells}>Remove Color</button>
       </div>
 
       <div className="canvas">{canvas}</div>
@@ -102,25 +160,26 @@ function AddColumnButton({ onAddColumnButtonClick }) {
   );
 }
 
-function ColorDropdownMenu({ collectColor }) {
-  const [selectedColor, setSelectedColor] = useState("white");
+//Works with handleColorSelect
+function ColorSelect({ handleColorSelect }) {
+  const [displayColor, setDisplayColor] = useState("");
 
   function changeColor(color) {
-    setSelectedColor(color);
-    collectColor(color);
+    setDisplayColor(color);
+    handleColorSelect(color);
   }
 
   return (
-    <select className="color-dropdown-menu" value={selectedColor} onChange={e => changeColor(e.target.value)}>
-      <option value="white">Select a Color</option>
-      <option value="white">white</option>
-      <option value="blue">blue</option>
-      <option value="red">red</option>
-      <option value="yellow">yellow</option>
-      <option value="green">green</option>
-      <option value="pink">pink</option>
-      <option value="purple">purple</option>
-      <option value="black">black</option>
+    <select className="color-dropdown-menu" value={displayColor} onChange={e => changeColor(e.target.value)}>
+      <option value="">Select a Color</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="yellow">Yellow</option>
+      <option value="white">White</option>
+      <option value="pink">Pink</option>
+      <option value="purple">Purple</option>
+      <option value="black">Black</option>
     </select>
   );
 }
