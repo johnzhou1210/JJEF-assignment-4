@@ -1,8 +1,12 @@
 import { useState } from "react";
 
-function Cell({ colorValue, onCellClick }) {
+function Cell({ cellKey, currRow, colorValue, onCellClick }) {
+  function giveKey() {
+    onCellClick(cellKey, currRow, colorValue);
+  }
+
   return (
-    <button className="cell" onClick={onCellClick}>
+    <button className="cell" onClick={giveKey}>
       {colorValue}
     </button>
   );
@@ -61,12 +65,16 @@ export default function Gridmaker() {
     setGrid(grid.map((row) => row.map((cell) => currentColor)));
   }
 
+  function cellClick(key, currRow, colorValue) {
+    console.log(key, currRow, colorValue);
+  }
+
   const canvas = grid.map((currRow, rowKey) => {
     console.log(currRow);
     return (
       <div key={rowKey} className="grid-row">
         {currRow.map((cell, cellKey) => {
-          return <Cell key={cellKey} colorValue={cell} />;
+          return <Cell key={cellKey} colorValue={cell} onCellClick={cellClick} cellKey={cellKey} currRow={rowKey} />;
         })}
       </div>
     );
