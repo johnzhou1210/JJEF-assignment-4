@@ -23,14 +23,14 @@ export default function Gridmaker() {
     if (numColumns == 0 && numRows == 0) {
       setNumColumns(1);
       setNumRows(1);
-      console.log(`numRows and numCols set to 1`);
+      //console.log(`numRows and numCols set to 1`);
       setGrid([[""]]);
       return;
     }
 
     let updatedNumRows = numRows + 1;
     setNumRows(updatedNumRows);
-    console.log(`numRows incremented to ${updatedNumRows}`);
+    //console.log(`numRows incremented to ${updatedNumRows}`);
 
     // add a "default" row to the grid
     let rowSquares = Array(numColumns == 0 ? 1 : numColumns).fill("");
@@ -43,13 +43,13 @@ export default function Gridmaker() {
     if (numColumns == 0 && numRows == 0) {
       setNumRows(1);
       setNumColumns(1);
-      console.log(`numRows and numCols set to 1`);
+      //console.log(`numRows and numCols set to 1`);
       setGrid([[""]]);
       return;
     }
     let updatedNumColumns = numColumns + 1;
     setNumColumns(updatedNumColumns);
-    console.log(`numColumns incremented to ${updatedNumColumns}`);
+    //console.log(`numColumns incremented to ${updatedNumColumns}`);
 
     // push an element to each row
     let newGrid = grid.slice();
@@ -59,7 +59,7 @@ export default function Gridmaker() {
   }
 
   const canvas = grid.map((currRow, rowKey) => {
-    console.log(currRow);
+    //console.log(currRow);
     return (
       <div key={rowKey} className="grid-row">
         {currRow.map((cell, cellKey) => {
