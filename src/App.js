@@ -2,9 +2,9 @@ import { useState } from "react";
 
 //Note to remove the color text outside of testing
 //Can set font size to 0px for not as practical but quick fix
-function Cell({ cellKey, currRow, colorValue, onCellClick}) {
-  function giveKey() {
-    onCellClick(cellKey, currRow, colorValue);
+function Cell({ cKey, rKey, colorValue, onCellClick}) {
+  function getKeys() {
+    onCellClick(cKey, rKey);
   }
 
   //cellStyle added
@@ -14,7 +14,7 @@ function Cell({ cellKey, currRow, colorValue, onCellClick}) {
   };
   
   return (
-    <button className="cell" style={cellStyle} onClick={giveKey}>
+    <button className="cell" style={cellStyle} onClick={getKeys}>
       {colorValue}
     </button>
   );
@@ -73,7 +73,7 @@ export default function Gridmaker() {
     return (
       <div key={rowKey} className="grid-row">
         {currRow.map((cell, cellKey) => {
-          return <Cell key={cellKey} colorValue={cell} onCellClick={cellClick} cellKey={cellKey} currRow={rowKey} />;
+          return <Cell key={cellKey} colorValue={cell} onCellClick={cellClick} cKey={cellKey} rKey={rowKey} />;
         })}
       </div>
     );
@@ -115,8 +115,10 @@ function removeRow() {
     setSelectedColor(color);
   }
 
-  function cellClick(key, currRow, colorValue) {
-    console.log(key, currRow, colorValue);
+  function cellClick(cKey, rKey) {
+    const coloredCellGrid = grid;
+    coloredCellGrid[rKey][cKey] = selectedColor;
+    setGrid(coloredCellGrid.map((row) => row.map((cell) => cell)));
   }
 
   //fillUncoloredCells added
