@@ -6,7 +6,7 @@ function Cell({ cKey, rKey, colorValue, onCellClick }) {
   }
 
   const cellStyle = {
-    backgroundColor: colorValue === "cell" ? "transparent" : colorValue,
+    backgroundColor: colorValue === "" ? "transparent" : colorValue,
   };
 
   return <button className="cell" style={cellStyle} onClick={getKeys} />;
@@ -24,7 +24,7 @@ export default function Gridmaker() {
       setNumColumns(1);
       setNumRows(1);
       console.log(`numRows and numCols set to 1`);
-      setGrid([["cell"]]);
+      setGrid([[""]]);
       return;
     }
 
@@ -33,7 +33,7 @@ export default function Gridmaker() {
     console.log(`numRows incremented to ${updatedNumRows}`);
 
     // add a "default" row to the grid
-    let rowSquares = Array(numColumns == 0 ? 1 : numColumns).fill("cell");
+    let rowSquares = Array(numColumns == 0 ? 1 : numColumns).fill("");
     let newGrid = grid.slice();
     newGrid.push(rowSquares);
     setGrid(newGrid);
@@ -44,7 +44,7 @@ export default function Gridmaker() {
       setNumRows(1);
       setNumColumns(1);
       console.log(`numRows and numCols set to 1`);
-      setGrid([["cell"]]);
+      setGrid([[""]]);
       return;
     }
     let updatedNumColumns = numColumns + 1;
@@ -54,7 +54,7 @@ export default function Gridmaker() {
     // push an element to each row
     let newGrid = grid.slice();
     newGrid.forEach((element) => {
-      element.push("cell");
+      element.push("");
     });
   }
 
@@ -125,14 +125,14 @@ export default function Gridmaker() {
   function fillUncoloredCells() {
     if (selectedColor) {
       const updatedGrid = grid.map((row) =>
-        row.map((cell) => (cell === "cell" ? selectedColor : cell))
+        row.map((cell) => (cell === "" ? selectedColor : cell))
       );
       setGrid(updatedGrid);
     }
   }
 
   function removeColorFromCells() {
-    const updatedGrid = grid.map((row) => row.map(() => "cell"));
+    const updatedGrid = grid.map((row) => row.map(() => ""));
     setGrid(updatedGrid);
   }
 
