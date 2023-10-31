@@ -1,30 +1,20 @@
 import { useState } from "react";
 
-//Note to remove the color text outside of testing
-//Can set font size to 0px for not as practical but quick fix
-function Cell({ cKey, rKey, colorValue, onCellClick}) {
+function Cell({ cKey, rKey, colorValue, onCellClick }) {
   function getKeys() {
     onCellClick(cKey, rKey, colorValue);
   }
 
-  //cellStyle added
-  //minor change to cellStyle to have the background properly filled with color
   const cellStyle = {
     backgroundColor: colorValue === "cell" ? "transparent" : colorValue,
   };
-  
-  return (
-    <button className="cell" style={cellStyle} onClick={getKeys}>
-      {colorValue}
-    </button>
-  );
+
+  return <button className="cell" style={cellStyle} onClick={getKeys} />;
 }
 
 export default function Gridmaker() {
-  //selectedColor and isColored variable added
   const [selectedColor, setSelectedColor] = useState(null);
-  const [isColored, setIsColored] = useState(false);
-  
+
   const [numRows, setNumRows] = useState(0);
   const [numColumns, setNumColumns] = useState(0);
   const [grid, setGrid] = useState([]);
@@ -39,7 +29,7 @@ export default function Gridmaker() {
     }
 
     let updatedNumRows = numRows + 1;
-    setNumRows(updatedNumRows); // increment number of rows
+    setNumRows(updatedNumRows);
     console.log(`numRows incremented to ${updatedNumRows}`);
 
     // add a "default" row to the grid
@@ -73,13 +63,21 @@ export default function Gridmaker() {
     return (
       <div key={rowKey} className="grid-row">
         {currRow.map((cell, cellKey) => {
-          return <Cell key={cellKey} colorValue={cell} onCellClick={cellClick} cKey={cellKey} rKey={rowKey} />;
+          return (
+            <Cell
+              key={cellKey}
+              colorValue={cell}
+              onCellClick={cellClick}
+              cKey={cellKey}
+              rKey={rowKey}
+            />
+          );
         })}
       </div>
     );
   });
 
-function removeColumn() {
+  function removeColumn() {
     if (numColumns > 0) {
       const updatedGrid = grid.map((row) => {
         const newRow = [...row];
@@ -87,22 +85,23 @@ function removeColumn() {
         return newRow;
       });
       setGrid(updatedGrid);
-      setNumColumns(numColumns - 1);
+      let newNumColumns = numColumns - 1;
+      setNumColumns(newNumColumns);
+      if (newNumColumns === 0) {
+        setNumRows(0);
+      }
     }
-    if (numColumns === 0) {
-      setNumRows(0);
-    }
-}
-function removeRow() {
+  }
+  function removeRow() {
     if (numRows > 0) {
       const updatedGrid = [...grid];
       updatedGrid.pop(); // Remove the last row
       setGrid(updatedGrid);
-      setNumRows(numRows - 1);
-    }
-    if (numRows === 0) {
-      setNumColumns(0);
-
+      let newNumRows = numRows - 1;
+      setNumRows(newNumRows);
+      if (newNumRows === 0) {
+        setNumColumns(0);
+      }
     }
   }
 
@@ -123,9 +122,6 @@ function removeRow() {
     }
   }
 
-  //fillUncoloredCells added
-  //the cell === "cell" will need to be changed to cell === ""
-  //temporary for current cells
   function fillUncoloredCells() {
     if (selectedColor) {
       const updatedGrid = grid.map((row) =>
@@ -135,9 +131,6 @@ function removeRow() {
     }
   }
 
-  //removeColorFromCells added
-  //same thing applies here
-  //currently "cell" will be changed to ""
   function removeColorFromCells() {
     const updatedGrid = grid.map((row) => row.map(() => "cell"));
     setGrid(updatedGrid);
@@ -151,7 +144,7 @@ function removeRow() {
         <ColorSelect handleColorSelect={handleColorSelect} />
         <button onClick={removeRow}>Remove Row </button>
         <button onClick={removeColumn}>Remove Column </button>
-        <FillGridButton onFillGridButtonClick={() => fillGrid()}/>
+        <FillGridButton onFillGridButtonClick={() => fillGrid()} />
         <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
         <button onClick={removeColorFromCells}>Remove Color</button>
       </div>
@@ -187,7 +180,11 @@ function ColorSelect({ handleColorSelect }) {
   }
 
   return (
-    <select className="color-dropdown-menu" value={displayColor} onChange={e => changeColor(e.target.value)}>
+    <select
+      className="color-dropdown-menu"
+      value={displayColor}
+      onChange={(e) => changeColor(e.target.value)}
+    >
       <option value="">Select a Color</option>
       <option value="red">Red</option>
       <option value="blue">Blue</option>
@@ -206,5 +203,5 @@ function FillGridButton({ onFillGridButtonClick }) {
     <button className="fill-grid-button" onClick={onFillGridButtonClick}>
       Fill Grid
     </button>
-  )
+  );
 }
