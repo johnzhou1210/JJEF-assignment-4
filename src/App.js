@@ -75,6 +75,21 @@ export default function Gridmaker() {
       </div>
     );
   });
+
+function removeColumn() {
+    if (numColumns > 0) {
+      const updatedGrid = grid.map((row) => {
+        const newRow = [...row];
+        newRow.pop(); // Remove the last column in this row
+        return newRow;
+      });
+      setGrid(updatedGrid);
+      setNumColumns(numColumns - 1);
+    }
+    if (numColumns === 0) {
+      setNumRows(0);
+    }
+}
 function removeRow() {
     if (numRows > 0) {
       const updatedGrid = [...grid];
@@ -84,6 +99,7 @@ function removeRow() {
     }
     if (numRows === 0) {
       setNumColumns(0);
+
     }
   }
   //handleColorSelect added
@@ -129,6 +145,7 @@ function removeRow() {
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
         <button onClick={removeRow}>Remove Row </button>
+        <button onClick={removeColumn}>Remove Column </button>
         <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
         <button onClick={removeColorFromCells}>Remove Color</button>
       </div>
