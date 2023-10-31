@@ -144,11 +144,8 @@ function removeRow() {
         <ColorSelect />
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
-
-        <button onClick={removeColumn}>Remove Column </button>
-
         <button onClick={removeRow}>Remove Row </button>
-
+        <button onClick={removeColumn}>Remove Column </button>
         <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
         <button onClick={removeColorFromCells}>Remove Color</button>
       </div>
