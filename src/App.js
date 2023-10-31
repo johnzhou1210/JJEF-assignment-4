@@ -4,7 +4,7 @@ import { useState } from "react";
 //Can set font size to 0px for not as practical but quick fix
 function Cell({ cKey, rKey, colorValue, onCellClick}) {
   function getKeys() {
-    onCellClick(cKey, rKey);
+    onCellClick(cKey, rKey, colorValue);
   }
 
   //cellStyle added
@@ -115,10 +115,12 @@ function removeRow() {
     setSelectedColor(color);
   }
 
-  function cellClick(cKey, rKey) {
-    const coloredCellGrid = grid;
-    coloredCellGrid[rKey][cKey] = selectedColor;
-    setGrid(coloredCellGrid.map((row) => row.map((cell) => cell)));
+  function cellClick(cKey, rKey, colorValue) {
+    if (colorValue !== selectedColor) {
+      const coloredCellGrid = grid;
+      coloredCellGrid[rKey][cKey] = selectedColor;
+      setGrid(coloredCellGrid.map((row) => row.map((cell) => cell)));
+    }
   }
 
   //fillUncoloredCells added
