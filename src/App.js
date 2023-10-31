@@ -63,7 +63,6 @@ export default function Gridmaker() {
       element.push("cell");
     });
   }
-  
 
   const canvas = grid.map((currRow, rowKey) => {
     console.log(currRow);
@@ -102,22 +101,12 @@ function removeRow() {
 
     }
   }
+
   //handleColorSelect added
   function handleColorSelect(color) {
     setSelectedColor(color);
   }
-  //Works with handleColorSelect
-  function ColorSelect() {
-    return (
-      <select onChange={(e) => handleColorSelect(e.target.value)}>
-        <option value="">Select Color</option>
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
-        <option value="green">Green</option>
-        <option value="yellow">Yellow</option>
-      </select>
-    );
-  }
+
   //fillUncoloredCells added
   //the cell === "cell" will need to be changed to cell === ""
   //temporary for current cells
@@ -129,6 +118,7 @@ function removeRow() {
       setGrid(updatedGrid);
     }
   }
+
   //removeColorFromCells added
   //same thing applies here
   //currently "cell" will be changed to ""
@@ -137,13 +127,12 @@ function removeRow() {
     setGrid(updatedGrid);
   }
 
-
   return (
     <>
       <div className="grid-tools">
-        <ColorSelect />
         <AddRowButton onAddRowButtonClick={() => addRow()} />
         <AddColumnButton onAddColumnButtonClick={() => addColumn()} />
+        <ColorSelect handleColorSelect={handleColorSelect} />
         <button onClick={removeRow}>Remove Row </button>
         <button onClick={removeColumn}>Remove Column </button>
         <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
@@ -171,4 +160,26 @@ function AddColumnButton({ onAddColumnButtonClick }) {
   );
 }
 
+//Works with handleColorSelect
+function ColorSelect({ handleColorSelect }) {
+  const [displayColor, setDisplayColor] = useState("");
 
+  function changeColor(color) {
+    setDisplayColor(color);
+    handleColorSelect(color);
+  }
+
+  return (
+    <select className="color-dropdown-menu" value={displayColor} onChange={e => changeColor(e.target.value)}>
+      <option value="">Select a Color</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="yellow">Yellow</option>
+      <option value="white">White</option>
+      <option value="pink">Pink</option>
+      <option value="purple">Purple</option>
+      <option value="black">Black</option>
+    </select>
+  );
+}
