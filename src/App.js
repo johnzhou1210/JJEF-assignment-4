@@ -102,6 +102,10 @@ function removeRow() {
     }
   }
 
+  function fillGrid() {
+    setGrid(grid.map((row) => row.map((cell) => selectedColor)));
+  }
+
   //handleColorSelect added
   function handleColorSelect(color) {
     setSelectedColor(color);
@@ -135,6 +139,7 @@ function removeRow() {
         <ColorSelect handleColorSelect={handleColorSelect} />
         <button onClick={removeRow}>Remove Row </button>
         <button onClick={removeColumn}>Remove Column </button>
+        <FillGridButton onFillGridButtonClick={() => fillGrid()}/>
         <button onClick={fillUncoloredCells}>Fill Uncolored Cells</button>
         <button onClick={removeColorFromCells}>Remove Color</button>
       </div>
@@ -182,4 +187,12 @@ function ColorSelect({ handleColorSelect }) {
       <option value="black">Black</option>
     </select>
   );
+}
+
+function FillGridButton({ onFillGridButtonClick }) {
+  return (
+    <button className="fill-grid-button" onClick={onFillGridButtonClick}>
+      Fill Grid
+    </button>
+  )
 }
